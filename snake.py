@@ -1,19 +1,23 @@
 from turtle import Turtle
 from icecream import ic
 
+STARTING_POSITIONS = [(0, 0), (-20, 0), (-40, 0)]
 class Snake:
     def __init__(self, segments=[]):
         self.segments = segments
-        x = 0
-        for _ in range(0, 3):
-            snake = Turtle()
-            snake.penup()
-            self.segments.append(snake)
-            snake.color("white")
-            snake.shape("square")
-            snake.goto(x, 0)
-            x -= 20
+        self.create_snake()
         self.head = self.segments[0]
+    
+    def create_snake(self):
+        for position in STARTING_POSITIONS:
+            self.add_segment(position)
+
+    def add_segment(self, position):
+        new_segment = Turtle("square")
+        new_segment.penup()
+        new_segment.color("white")
+        new_segment.goto(position)
+        self.segments.append(new_segment)
 
     def move(self):
         for index in range(len(self.segments)-1, 0, -1):
@@ -37,3 +41,6 @@ class Snake:
     def go_down(self):
         if self.head.heading() != 90:
             self.head.setheading(270)
+
+    def grow(self):
+        self.add_segment(self.segments[-1].position())
